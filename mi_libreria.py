@@ -26,6 +26,3 @@ def producto(n1, n2):
 def division(n1, n2):
     """ """
     return n1 / n2
-
-def test_function(algo):
-    print(algo)

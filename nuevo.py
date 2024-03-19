@@ -121,7 +121,6 @@ dic = {'1': 'hola', '2': 'chau', 0: 'asdsad'} #! key -> value
 
 # for key, value in dic.items():
 #     print(key, value)
-
 #! MODULOS -> librerias
 
 # import mi_libreria
@@ -136,3 +135,56 @@ print(ml.producto(2, 2))
 from math import factorial
 
 print(factorial(5))
+
+
+
+class Car:
+    model, color, id = None, None, None
+
+    def funcion_car(self, numero):
+        print("prueba funcion", numero)
+
+    def __str__(self):
+        return f'car data {self.model} {self.color} {self.id}'
+
+
+car_1 = Car()
+car_1.color = 'red'
+car_1.model = '1998'
+
+car_1.funcion_car(123)
+
+print(car_1.model, car_1.color)
+print(car_1)
+
+
+#! revision strings
+
+cadena = "hola munDo DESDE Python"
+
+print(cadena.capitalize())
+print(cadena.count('o'))
+print(cadena.find('th'))
+print(cadena.title())
+# cadena = '1234r' 
+# print(cadena.isnumeric())
+print(cadena.lower())
+print(cadena.upper())
+print(cadena.replace('munDo', 'world'))
+print(cadena.strip())
+print(cadena.split(' '))
+palabras = ['uno', 'chau', 'nuevo']
+nueva_cadena = '__'.join(palabras)
+
+if 'j' == 'J':
+    print('son la misma letra')
+else:
+    print('no son la misma letra')
+
+
+names = ['Juan', 'Julian', 'Maria', 'Ana', 'Julieta', 'Jose']
+
+for name in names:
+    if name.startswith("J"):
+        print(name)
+
