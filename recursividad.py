@@ -47,3 +47,74 @@ def potencia(base, exponente):
         return base * potencia(base, exponente-1)
 
 print(potencia(2, 10))
+
+#! ejercicio 6  'hola' --> 'aloh'
+def invertir_cadena(cadena):
+    if len(cadena) == 0:
+        return cadena
+    else:
+        return cadena[-1] + invertir_cadena(cadena[:-1])
+
+cadena = 'hola'
+print(invertir_cadena(cadena))
+
+#! ejercicio 7  = 1/n + (1/n-1...1)
+def sumatoria_serie(numero):
+    if numero == 1:
+        return 1
+    else:
+        return 1/numero + sumatoria_serie(numero-1)
+
+print(sumatoria_serie(5))
+
+#! ejercicio 8 
+def convert_to_binary(numero):
+    if numero <= 1:
+        return str(numero)
+    else:
+        return convert_to_binary(numero // 2) + str(numero % 2)
+
+print(convert_to_binary(13))
+
+#! ejercicio 10
+
+def count_digit(numero):
+    if numero < 10:
+        return 1
+    else:
+        return 1 + count_digit(numero//10)
+
+print(count_digit(123))
+
+#! ejercicio 11
+def invert_number(numero):
+    if numero < 10:
+        return numero
+    else:
+        return (numero % 10) * 10 ** len(str(numero//10)) + invert_number(numero//10)
+
+
+print(invert_number(1234567))
+
+
+#! ejercicio 14
+def sumar_digitos(numero):
+    if numero < 10:
+        return numero
+    else:
+        return (numero % 10) + sumar_digitos(numero//10)
+
+print(sumar_digitos(71791))
+
+
+names = ['jaun', 'maria', 'pepito', 'ana']
+
+def barrido(lista):
+    if len(lista) == 1:
+        print(lista[0])
+    else:
+        print(lista[-1])
+        barrido(lista[:-1])
+
+
+barrido(names)
