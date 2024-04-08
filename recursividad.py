@@ -107,14 +107,101 @@ def sumar_digitos(numero):
 print(sumar_digitos(71791))
 
 
-names = ['jaun', 'maria', 'pepito', 'ana']
+# names = ['jaun', 'maria', 'pepito', 'ana']
 
-def barrido(lista):
-    if len(lista) == 1:
-        print(lista[0])
+# def barrido(lista):
+#     if len(lista) == 1:
+#         print(lista[0])
+#     else:
+#         print(lista[-1])
+#         barrido(lista[:-1])
+
+
+# barrido(names)
+
+#! 
+def fibonacci(numero):
+    if numero == 0 or numero == 1:
+        return numero
     else:
-        print(lista[-1])
-        barrido(lista[:-1])
+        return fibonacci(numero-1) + fibonacci(numero-2)
 
 
-barrido(names)
+
+def fibonacci_iter(numero):
+    if numero == 0 or numero == 1:
+        return numero
+    else:
+        fibn_1 = 1
+        fibn_2 = 0
+        # fib_actual = None
+        for i in range(2, numero+1):
+            # # fib_actual = fibn_1 + fibn_2
+            # fibn_2 = fibn_1
+            # fibn_1 = fib_actual
+            fibn_2, fibn_1 = fibn_1, fibn_1 + fibn_2
+        return fibn_1
+
+# print(fibonacci(7))
+# print(fibonacci_iter(7))
+
+
+numeros = [1, 2, 3, 7, 10, 23, 45]
+
+def bb_recursiva(lista, buscado, primero, ultimo):
+    medio = (primero + ultimo) // 2
+    if primero > ultimo:
+        return None
+    elif buscado == lista[medio]:
+        return medio
+    else:
+        if buscado < lista[medio]: 
+            return bb_recursiva(lista, buscado, primero, medio-1)
+        else:
+            return bb_recursiva(lista, buscado, medio+1, ultimo)
+
+
+pos = bb_recursiva(numeros, 7, 0, len(numeros)-1)
+print(f"posicion {pos}")
+if pos is not None:
+    print(pos, numeros[pos])
+
+numeros = [100, 23, 0, 5, 53, 7, 70, 2, 60, 90, 3, 46, 45]
+
+def quicksort(lista, primero, ultimo):
+    """Método de ordenamiento quicksort."""
+    izquierda = primero
+    derecha = ultimo-1
+    pivote = ultimo
+    print('indices', izquierda, derecha, lista[pivote])
+
+    while (izquierda < derecha):
+
+        while (lista[izquierda] < lista[pivote]) and (izquierda <= derecha):
+            izquierda += 1
+            print('deplazamineto izquierda', lista, izquierda)
+            a = input()
+
+        while (lista[derecha] > lista[pivote]) and (derecha >= izquierda):
+            derecha -= 1
+            print('deplazamineto derecha', lista, derecha)
+            a = input()
+
+        if(izquierda < derecha):
+            lista[izquierda], lista[derecha] = lista[derecha], lista[izquierda]
+            print('intercambio interno', lista)
+            a = input()
+
+    if(lista[pivote] < lista[izquierda]):
+        lista[izquierda], lista[pivote] = lista[pivote], lista[izquierda]
+        print('intercambio pivote', lista)
+        a = input()
+
+    print('llamdas recursivas')
+    if(primero < izquierda):
+        quicksort(lista, primero, izquierda-1)
+    if(ultimo > izquierda):
+        quicksort(lista, izquierda+1, ultimo)
+
+
+quicksort(numeros, 0, len(numeros)-1)
