@@ -204,4 +204,24 @@ def quicksort(lista, primero, ultimo):
         quicksort(lista, izquierda+1, ultimo)
 
 
-quicksort(numeros, 0, len(numeros)-1)
+# quicksort(numeros, 0, len(numeros)-1)
+
+
+
+
+#! raiz 25 = 5 * 5
+
+def raiz_cuadarada(numero, valor=1):
+    if numero == 0 or numero == 1:
+        return numero
+    else:
+        resultado = valor * valor
+        if resultado == numero:
+            return valor
+        elif resultado > numero:
+            return valor -1
+        else:
+            return raiz_cuadarada(numero, valor+1)
+
+print(raiz_cuadarada(15))
+
