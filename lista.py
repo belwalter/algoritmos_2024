@@ -106,7 +106,7 @@ def show_list_list(title, subtitle, list_values):
     print()
     print(f"{title}")
     for index, elemento in enumerate(list_values):
-        print(index, elemento['nombre'], elemento['id'])
+        print(index, elemento['nombre'])
         print(f"    {subtitle}")
         for second_index, second_element in enumerate(elemento['sublist']):
             print('    ', second_index, second_element)
