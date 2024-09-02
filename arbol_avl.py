@@ -22,12 +22,55 @@ class BinaryTree:
 
     def update_height(self, root):
         if root is not None:
-            print(f'actualizar altura de {root.value}')
+            # print(f'actualizar altura de {root.value}')
             left_height = self.height(root.left)
             right_height = self.height(root.right)
             root.height = max(left_height, right_height) + 1
-            print(f'altura izq {left_height} altura der {right_height}')
-            print(f'altura de {root.value} es {root.height}')
+            # print(f'altura izq {left_height} altura der {right_height}')
+            # print(f'altura de {root.value} es {root.height}')
+
+    def simple_rotation(self, root, control):
+        if control:
+            aux = root.left
+            root.left = aux.right
+            aux.right = root
+        else:
+            aux = root.right
+            root.right = aux.left
+            aux.left = root
+        self.update_height(root)
+        self.update_height(aux)
+        root = aux
+        return root
+
+    def double_rotation(self, root, control):
+        if control:
+            root.left = self.simple_rotation(root.left, False)
+            root = self.simple_rotation(root, True)
+        else:
+            root.right = self.simple_rotation(root.right, True)
+            root = self.simple_rotation(root, False)
+        return root
+
+    def balancing(self, root):
+        if root is not None:
+            if self.height(root.left) - self.height(root.right) == 2:
+                print('desbalanceado a la izquierda')
+                if self.height(root.left.left) >= self.height(root.left.right):
+                    print('rotar simple derecha')
+                    root = self.simple_rotation(root, True)
+                else:
+                    print('rotar doble derecha')
+                    root = self.double_rotation(root, True)
+            elif self.height(root.right) - self.height(root.left) == 2:
+                print('desbalanceado a la derecha')
+                if self.height(root.right.right) >= self.height(root.right.left):
+                    print('rotar simple izquierda')
+                    root = self.simple_rotation(root, False)
+                else:
+                    print('rotar doble izquierda')
+                    root = self.double_rotation(root, False)
+        return root
 
     def insert_node(self, value, other_value=None):
         def __insert(root, value, other_value=None):
@@ -37,6 +80,7 @@ class BinaryTree:
                 root.left = __insert(root.left, value, other_value)
             else:
                 root.right = __insert(root.right, value, other_value)
+            root = self.balancing(root)
             self.update_height(root)
             return root
 
@@ -134,7 +178,7 @@ class BinaryTree:
 
         while pendientes.size() > 0:
             node = pendientes.attention()
-            print(node.value)
+            print(f"nivel {node.height}", node.value)
             if node.left is not None:
                 pendientes.arrive(node.left)
             if node.right is not None:
@@ -172,8 +216,9 @@ class BinaryTree:
                         # print('tiene ambos hijos')
                         root.left, replace_node = __replace(root.left)
                         root.value = replace_node.value
-                        return root, value_delete
-                
+                        # return root, value_delete
+                    root = self.balancing(root)
+                    self.update_height(root)
             return root, value_delete
 
         delete_value = None
@@ -183,14 +228,21 @@ class BinaryTree:
 
 tree = BinaryTree()
 
-tree.insert_node('L')
-a = input()
-tree.insert_node('D')
-a = input()
-tree.insert_node('B')
-a = input()
-tree.insert_node('M')
+# tree.insert_node('B')
+# tree.insert_node('W')
+# tree.insert_node('V')
+# tree.insert_node('I')
+# tree.insert_node('M')
+# tree.insert_node('R')
+# tree.insert_node('Z')
+# tree.root = tree.balancing(tree.root)
+for i in range(1, 16):
+    tree.insert_node(i)
+    tree.by_level()
+    a = input()
 
+
+print('diferencia de altura', tree.height(tree.root.right) - tree.height(tree.root.left))
 # tree.insert_node(19)
 # tree.insert_node(7)
 # tree.insert_node(31)
