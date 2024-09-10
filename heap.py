@@ -1,63 +1,185 @@
 
 
-class Heap():
+class HeapMax():
 
     def __init__(self):
         self.elements = []
     
     def add(self, value):
         self.elements.append(value)
-        self.flotar(len(self.elements)-1)
+        self.float(len(self.elements)-1)
 
     def remove(self):
         if len(self.elements) > 0:
-            self.intercambio(0, len(self.elements)-1)
+            self.interchange(0, len(self.elements)-1)
             value = self.elements.pop()
-            self.hundir(0)
+            self.sink(0)
             return value
         else:
             return None
 
-    def intercambio(self, index_1, index_2):
+    def interchange(self, index_1, index_2):
         self.elements[index_1], self.elements[index_2] = self.elements[index_2], self.elements[index_1]
 
-    def flotar(self, index):
-        print('llamada flotar')
-        padre = (index-1) // 2
-        while index > 0 and self.elements[index] > self.elements[padre]:
-            print('flotandoooo')
-            self.intercambio(index, padre)
-            index = padre
-            padre = (index-1) // 2
+    def float(self, index):
+        father = (index-1) // 2
+        while index > 0 and self.elements[index] > self.elements[father]:
+            self.interchange(index, father)
+            index = father
+            father = (index-1) // 2
 
-    def hundir(self, index):
-        print('llamar hundir')
-        hijo_izq = (index * 2) + 1
+    def sink(self, index):
+        left_child = (index * 2) + 1
         control = True
-        while control and hijo_izq < len(self.elements)-1:
-            print('intentando hundir')
-            hijo_der = (index * 2) + 2
-            mayor = hijo_izq
-            if hijo_der < len(self.elements)-1:
-                if self.elements[hijo_der] > self.elements[hijo_izq]:
-                    mayor = hijo_der
-            if self.elements[index] < self.elements[mayor]:
-                self.intercambio(index, mayor)
-                index = mayor
-                hijo_izq = (index * 2) + 1
+        while control and left_child < len(self.elements):
+            right_child = (index * 2) + 2
+            max = left_child
+            if right_child < len(self.elements):
+                if self.elements[right_child] > self.elements[left_child]:
+                    max = right_child
+            if self.elements[index] < self.elements[max]:
+                self.interchange(index, max)
+                index = max
+                left_child = (index * 2) + 1
             else:
                 control = False
 
+    def heapify(self, elements):
+        self.elements = elements
+        for i in range(len(self.elements)):
+            self.float(i)
 
-h = Heap()
-h.add(17)
-h.add(3)
-h.add(20)
-h.add(1)
-h.add(15)
-h.add(30)
+    def sort(self):
+        result = []
+        amount_elements = len(self.elements)
+        for i in range(amount_elements):
+            value = self.remove()
+            result.append(value)
+        return result
+    
+    def arrive(self, value, priority):
+        self.add([priority, value])
+
+    def atention(self):
+        return self.remove()
+
+    def change_proirity(self, index, new_priority):
+        if index < len(self.elements):
+            previous_priority = self.elements[index][0]
+            self.elements[index][0] = new_priority
+            if new_priority > previous_priority:
+                self.float(index)
+            elif new_priority < previous_priority:
+                self.sink(index)
+
+
+class HeapMin():
+
+    def __init__(self):
+        self.elements = []
+    
+    def add(self, value):
+        self.elements.append(value)
+        self.float(len(self.elements)-1)
+
+    def remove(self):
+        if len(self.elements) > 0:
+            self.interchange(0, len(self.elements)-1)
+            value = self.elements.pop()
+            self.sink(0)
+            return value
+        else:
+            return None
+
+    def interchange(self, index_1, index_2):
+        self.elements[index_1], self.elements[index_2] = self.elements[index_2], self.elements[index_1]
+
+    def float(self, index):
+        father = (index-1) // 2
+        while index > 0 and self.elements[index] < self.elements[father]:
+            self.interchange(index, father)
+            index = father
+            father = (index-1) // 2
+
+    def sink(self, index):
+        left_child = (index * 2) + 1
+        control = True
+        while control and left_child < len(self.elements):
+            right_child = (index * 2) + 2
+            min = left_child
+            if right_child < len(self.elements):
+                if self.elements[right_child] < self.elements[left_child]:
+                    min = right_child
+            if self.elements[index] > self.elements[min]:
+                self.interchange(index, min)
+                index = min
+                left_child = (index * 2) + 1
+            else:
+                control = False
+
+    def heapify(self, elements):
+        self.elements = elements
+        for i in range(len(self.elements)):
+            self.float(i)
+
+    def sort(self):
+        result = []
+        amount_elements = len(self.elements)
+        for i in range(amount_elements):
+            value = self.remove()
+            result.append(value)
+        return result
+
+
+    def arrive(self, value, priority):
+        self.add([priority, value])
+
+    def atention(self):
+        return self.remove()
+
+    def change_proirity(self, index, new_priority):
+        if index < len(self.elements):
+            previous_priority = self.elements[index][0]
+            self.elements[index][0] = new_priority
+            if new_priority < previous_priority:
+                self.float(index)
+            elif new_priority > previous_priority:
+                self.sink(index)
+
+
+h = HeapMin()
+# h.add(17)
+# h.add(3)
+# h.add(20)
+# h.add(1)
+# h.add(15)
+# h.add(30)
+# print(h.elements)
+# a = input()
+# elements = [19, 50, 10, 0, 40, 25]
+# h.heapify(elements)
+# print(h.elements)
+# a =input()
+# print(h.sort())
+
+# nombres = ['ana', 'juan', 'mario', 'julieta', 'pepito', 'lola']
+# from random import randint
+
+# for nombre in nombres:
+#     priority = randint(1,3)
+#     h.arrive(nombre, priority)
+
+#     print(h.elements)
+#     a = input()
+
+# while len(h.elements) > 0:
+#     print(h.atention())
+
+h.elements = [[1, 'pepito'], [1, 'mario'], [1, 'ana'], [2, 'juan'], [2, 'julieta'], [3, 'lola']]
+
+h.change_proirity(0, 3)
+
 print(h.elements)
 a = input()
 while len(h.elements) > 0:
-    print(h.elements, h.remove())
-    a = input()
+    print(h.atention())
