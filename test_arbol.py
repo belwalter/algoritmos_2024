@@ -1,4 +1,4 @@
-from arbol import BinaryTree
+from arbol_avl import BinaryTree
 
 super_heroes = [
   {
@@ -14,7 +14,7 @@ super_heroes = [
     "biografia": "Mutante con garras retráctiles y habilidades regenerativas, miembro de los X-Men."
   },
   {
-    "nombre": "Roctor Strange",
+    "nombre": "Dortor Strange",
     "año_aparicion": 1963,
     "casa_comic": "Marvel Comics",
     "biografia": "Hechicero supremo del universo Marvel, maestro de las artes místicas y protector de la realidad."
@@ -117,7 +117,7 @@ super_heroes = [
     "biografia": "Miembro de los 4 Fantásticos, posee el poder de hacerse invisible y crear campos de fuerza."
   },
   {
-    "nombre": "La Antorcha Humana",
+    "nombre": "La Alforcha Humana",
     "año_aparicion": 1961,
     "casa_comic": "Marvel Comics",
     "biografia": "Miembro de los 4 Fantásticos, puede envolverse en llamas y volar a altas velocidades."
@@ -152,17 +152,34 @@ tree = BinaryTree()
 
 for personaje in super_heroes:
     is_hero = False if 'villano' in personaje else True
-    tree.insert_node(personaje['nombre'], {'is_hero': is_hero})
+    personaje['is_hero'] = is_hero
+    tree.insert_node(personaje['nombre'], personaje)
 
-tree.inorden_villanos()
+# tree.inorden_villanos()
+# print()
+# tree.inorden_superheros_start_with('R')
+# print()
+# print(tree.contar_super_heroes())
+
+
+# pos = tree.search('Roctor Strange')
+# pos.value = 'Doctor Strange'
+# print()
+
+# tree.inorden()
+
+tree.proximity_search('La')
+
+value_to_delete = 'La Alforcha Humana'
+delete_value, extra_info = tree.delete_node(value_to_delete)
+print('eliminado', delete_value, extra_info)
+new_name = 'La Antorcha Humana'
+extra_info['nombre'] = new_name
+tree.insert_node(new_name, extra_info)
+tree.proximity_search('La')
+pos = tree.search('La Antorcha Humana')
+if pos:
+    print('encontrado', pos.other_value)
+
 print()
-tree.inorden_superheros_start_with('R')
-print()
-print(tree.contar_super_heroes())
-
-
-pos = tree.search('Roctor Strange')
-pos.value = 'Doctor Strange'
-print()
-
-tree.inorden()
+tree.proximity_search('La')

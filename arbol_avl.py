@@ -55,20 +55,20 @@ class BinaryTree:
     def balancing(self, root):
         if root is not None:
             if self.height(root.left) - self.height(root.right) == 2:
-                print('desbalanceado a la izquierda')
+                # print('desbalanceado a la izquierda')
                 if self.height(root.left.left) >= self.height(root.left.right):
-                    print('rotar simple derecha')
+                    # print('rotar simple derecha')
                     root = self.simple_rotation(root, True)
                 else:
-                    print('rotar doble derecha')
+                    # print('rotar doble derecha')
                     root = self.double_rotation(root, True)
             elif self.height(root.right) - self.height(root.left) == 2:
-                print('desbalanceado a la derecha')
+                # print('desbalanceado a la derecha')
                 if self.height(root.right.right) >= self.height(root.right.left):
-                    print('rotar simple izquierda')
+                    # print('rotar simple izquierda')
                     root = self.simple_rotation(root, False)
                 else:
-                    print('rotar doble izquierda')
+                    # print('rotar doble izquierda')
                     root = self.double_rotation(root, False)
         return root
 
@@ -171,6 +171,17 @@ class BinaryTree:
         if self.root is not None:
             __inorden_superheros_start_with(self.root, start)
 
+    def proximity_search(self, search_value):
+        def __proximity_search(root, search_value):
+            if root is not None:
+                __proximity_search(root.left, search_value)
+                if root.value.startswith(search_value):
+                    print(root.value)
+                __proximity_search(root.right, search_value)
+
+        if self.root is not None:
+            __proximity_search(self.root, search_value)
+
     def by_level(self):
         pendientes = Queue()
         if self.root is not None:
@@ -196,37 +207,41 @@ class BinaryTree:
 
         def __delete(root, value):
             value_delete = None
+            extra_data_delete = None
             if root is not None:
                 if root.value > value:
                     # print(f'buscar  a la izquierda de {root.value}')
-                    root.left, value_delete = __delete(root.left, value)
+                    root.left, value_delete, extra_data_delete = __delete(root.left, value)
                 elif root.value < value:
                     # print(f'buscar  a la derecha de {root.value}')
-                    root.right, value_delete = __delete(root.right, value)
+                    root.right, value_delete, extra_data_delete = __delete(root.right, value)
                 else:
                     # print('valor encontrado')
                     value_delete = root.value
+                    extra_data_delete = root.other_value
                     if root.left is None:
                         # print('a la izquierda no hay nada')
-                        return root.right, value_delete
+                        return root.right, value_delete, extra_data_delete 
                     elif root.right is None:
                         # print('a la derecha  no hay nada')
-                        return root.left, value_delete
+                        return root.left, value_delete, extra_data_delete
                     else:
                         # print('tiene ambos hijos')
                         root.left, replace_node = __replace(root.left)
                         root.value = replace_node.value
+                        root.other_value = replace_node.other_value
                         # return root, value_delete
                     root = self.balancing(root)
                     self.update_height(root)
-            return root, value_delete
+            return root, value_delete, extra_data_delete
 
         delete_value = None
+        delete_extra_value = None
         if self.root is not None:
-            self.root, delete_value = __delete(self.root, value)
-        return delete_value
+            self.root, delete_value, delete_extra_value = __delete(self.root, value)
+        return delete_value, delete_extra_value
 
-tree = BinaryTree()
+# tree = BinaryTree()
 
 # tree.insert_node('B')
 # tree.insert_node('W')
@@ -236,13 +251,13 @@ tree = BinaryTree()
 # tree.insert_node('R')
 # tree.insert_node('Z')
 # tree.root = tree.balancing(tree.root)
-for i in range(1, 16):
-    tree.insert_node(i)
-    tree.by_level()
-    a = input()
+# for i in range(1, 16):
+#     tree.insert_node(i)
+#     tree.by_level()
+#     a = input()
 
 
-print('diferencia de altura', tree.height(tree.root.right) - tree.height(tree.root.left))
+# print('diferencia de altura', tree.height(tree.root.right) - tree.height(tree.root.left))
 # tree.insert_node(19)
 # tree.insert_node(7)
 # tree.insert_node(31)
