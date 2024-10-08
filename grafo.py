@@ -1,3 +1,5 @@
+from cola import Queue
+
 class Graph:
     def __init__(self, dirigido=True):
         self.elements = []
@@ -29,6 +31,7 @@ class Graph:
         nodo = {
         'value': value,
         'aristas': [],
+        'visitado': False,
         }
         self.elements.append(nodo)
 
@@ -57,3 +60,38 @@ class Graph:
             for nodo in self.elements:
                 self.delete_arista(nodo['value'], value)
             return delete_value
+    
+    def mark_as_not_visited(self):
+        for nodo in self.elements:
+            nodo['visitado'] = False
+
+    def deep_show(self, origin):
+        def __deep_show(graph, origin):
+            pos_vertice = graph.search(origin)
+            if pos_vertice is not None:
+                if not graph.elements[pos_vertice]['visitado']:
+                    graph.elements[pos_vertice]['visitado'] = True
+                    print(graph.elements[pos_vertice]['value'])
+                    adyacentes = graph.elements[pos_vertice]['aristas']
+                    for adyacente in adyacentes:
+                        __deep_show(graph, adyacente['value'])
+        
+        self.mark_as_not_visited()
+        __deep_show(self, origin)
+
+    def amplitude_show(self, origin):
+        self.mark_as_not_visited()
+        cola = Queue()
+        pos_vertice = self.search(origin)
+        if pos_vertice is not None:
+            if not self.elements[pos_vertice]['visitado']:
+                cola.arrive(self.elements[pos_vertice])
+                while cola.size() > 0:
+                    nodo = cola.attention()
+                    nodo['visitado'] = True
+                    print(nodo['value'])
+                    adyacentes = nodo['aristas']
+                    for adyacente in adyacentes:
+                        pos_adyaecnte = self.search(adyacente['value'])
+                        if not self.elements[pos_adyaecnte]['visitado']:
+                            cola.arrive(self.elements[pos_adyaecnte])
