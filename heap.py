@@ -57,6 +57,11 @@ class HeapMax():
             result.append(value)
         return result
     
+    def search(self, value):
+        for index, element in enumerate(self.elements):
+            if element[1][0] == value:
+                return index
+    
     def arrive(self, value, priority):
         self.add([priority, value])
 
@@ -130,6 +135,10 @@ class HeapMin():
             result.append(value)
         return result
 
+    def search(self, value):
+        for index, element in enumerate(self.elements):
+            if element[1][0] == value:
+                return index
 
     def arrive(self, value, priority):
         self.add([priority, value])
@@ -147,7 +156,7 @@ class HeapMin():
                 self.sink(index)
 
 
-h = HeapMin()
+# h = HeapMin()
 # h.add(17)
 # h.add(3)
 # h.add(20)
@@ -162,18 +171,18 @@ h = HeapMin()
 # a =input()
 # print(h.sort())
 
-nombres = ['ana', 'juan', 'mario', 'julieta', 'pepito', 'lola']
-from random import randint
+# nombres = ['ana', 'juan', 'mario', 'julieta', 'pepito', 'lola']
+# from random import randint
 
-for nombre in nombres:
-    priority = randint(1,3)
-    h.arrive(nombre, priority)
+# for nombre in nombres:
+#     priority = randint(1,3)
+#     h.arrive(nombre, priority)
 
-    print(h.elements)
-    a = input()
+#     print(h.elements)
+#     a = input()
 
-while len(h.elements) > 0:
-    print(h.atention())
+# while len(h.elements) > 0:
+#     print(h.atention())
 
 # h.elements = [[1, 'pepito'], [1, 'mario'], [1, 'ana'], [2, 'juan'], [2, 'julieta'], [3, 'lola']]
 

@@ -1,4 +1,6 @@
 from cola import Queue
+from heap import HeapMin
+from pila import Stack
 
 class Graph:
     def __init__(self, dirigido=True):
@@ -45,12 +47,24 @@ class Graph:
                 'peso': peso
             }
             self.elements[pos_origen]['aristas'].append(arista)
+            if not self.dirigido:
+                arista = {
+                    'value': origen,
+                    'peso': peso
+                }
+                self.elements[pos_destino]['aristas'].append(arista)
+
     
     def delete_arista(self, origen, destino):
         result = self.search_arista(origen, destino)
         if result:
             pos_vertice, pos_arista = result
             value = self.elements[pos_vertice]['aristas'].pop(pos_arista)
+            if not self.dirigido:
+                result = self.search_arista(destino, origen)
+                if result:
+                    pos_vertice, pos_arista = result
+                    self.elements[pos_vertice]['aristas'].pop(pos_arista)
             return value
     
     def delete_vertice(self, value):
@@ -95,3 +109,45 @@ class Graph:
                         pos_adyaecnte = self.search(adyacente['value'])
                         if not self.elements[pos_adyaecnte]['visitado']:
                             cola.arrive(self.elements[pos_adyaecnte])
+    
+    def exist_path(self, origen, destino):
+        def __exist_path(graph, origin, destino):
+            result = False
+            pos_vertice = graph.search(origin)
+            if pos_vertice is not None:
+                if not graph.elements[pos_vertice]['visitado']:
+                    graph.elements[pos_vertice]['visitado'] = True
+                    if graph.elements[pos_vertice]['value'] == destino:
+                        return True
+                    else:
+                        adyacentes = graph.elements[pos_vertice]['aristas']
+                        for adyacente in adyacentes:
+                            result = __exist_path(graph, adyacente['value'], destino)
+                            if result:
+                                break
+            return result
+        
+        self.mark_as_not_visited()
+        result = __exist_path(self, origen, destino)
+        return result
+
+    def dijkstra(self, origen):
+        from math import inf
+        no_visitados = HeapMin()
+        camino = Stack()
+        for nodo in self.elements:
+            distancia = 0 if nodo['value'] == origen else inf
+            no_visitados.arrive([nodo['value'], nodo, None], distancia)
+        while len(no_visitados.elements) > 0:
+            node = no_visitados.atention()
+            costo_nodo_actual = node[0]
+            camino.push(node)
+            adjacentes = node[1][1]['aristas']
+            # print(costo_nodo_actual, adjacentes)
+            for adjacente in adjacentes:
+                pos = no_visitados.search(adjacente['value'])
+                if pos is not None:
+                    if costo_nodo_actual + adjacente['peso'] < no_visitados.elements[pos][0]:
+                        no_visitados.elements[pos][1][2] = node[1][0]
+                        no_visitados.change_proirity(pos, costo_nodo_actual + adjacente['peso'])
+        return camino
