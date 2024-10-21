@@ -36,21 +36,25 @@ grafo.insert_arista('Z', 'R', 4)
 # grafo.delete_vertice('X')
 grafo.show_graph()
 
-camino = grafo.dijkstra('R')
-destino = 'T'
-peso_total = None
-camino_completo = []
-while camino.size() > 0:
-    value = camino.pop()
-    if value[1][0] == destino:
-        if peso_total is None:
-            peso_total = value[0]
-        camino_completo.append(value[1][0])
-        destino = value[1][2]
-camino_completo.reverse()
-print(f'el camino mas corto es: {'-'.join(camino_completo)} con un costo de {peso_total}')
+# camino = grafo.dijkstra('R')
+# destino = 'T'
+# peso_total = None
+# camino_completo = []
+# while camino.size() > 0:
+#     value = camino.pop()
+#     if value[1][0] == destino:
+#         if peso_total is None:
+#             peso_total = value[0]
+#         camino_completo.append(value[1][0])
+#         destino = value[1][2]
+# camino_completo.reverse()
+# print(f'el camino mas corto es: {'-'.join(camino_completo)} con un costo de {peso_total}')
 
-
+arbol_expansion = grafo.kruskal('T')
+print(arbol_expansion)
+for arista in arbol_expansion[0].split(';'):
+    origen, destino, peso = arista.split('-')
+    print(f"origen: {origen} -> destino: {destino} peso: {peso}")
 # print(grafo.exist_path('T', 'Z'))
 # grafo.mark_as_not_visited()
 # print('primero')
