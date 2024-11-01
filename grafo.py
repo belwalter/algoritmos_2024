@@ -169,20 +169,21 @@ class Graph:
 
         # print(aristas.elements)
         while len(bosque) > 1 and len(aristas.elements) > 0:
-            # print(bosque)
             arista = aristas.atention()
+            # print(bosque)
+            # print(arista[1][0], arista[1][1])
             # print(arista)
             origen = buscar_en_bosque(bosque, arista[1][0])
             destino = buscar_en_bosque(bosque, arista[1][1])
             # print(origen, destino)
             if origen is not None and destino is not None:
                 if origen != destino:
-                    # if origen > destino:
-                    vertice_ori = bosque.pop(origen)
-                    vertice_des = bosque.pop(destino)
-                    # else:
-                    #     vertice_des = bosque.pop(destino)
-                    #     vertice_ori = bosque.pop(origen)
+                    if origen > destino:
+                        vertice_ori = bosque.pop(origen)
+                        vertice_des = bosque.pop(destino)
+                    else:
+                        vertice_des = bosque.pop(destino)
+                        vertice_ori = bosque.pop(origen)
 
                     if '-' not in vertice_ori and '-' not in vertice_des:
                         bosque.append(f'{vertice_ori}-{vertice_des}-{arista[0]}')
